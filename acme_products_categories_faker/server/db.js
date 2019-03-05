@@ -66,4 +66,17 @@ const createCat = function(){
     .then((category)=>category)
     .catch((err)=>console.log('Error creating new category'))
 }
-module.exports = {syncAndSeed, Category, Product, createCat}
+
+const createProduct = function(catid){
+    let cat = {}
+    let prod = {}
+    Product.create({name: faker.commerce.productName()})
+    .then((product)=>{
+        prod=product
+        return Category.findOne({where: {id: catid}})
+    })
+    .then((category)=>prod.setCategory(category))
+    .catch((err)=>console.log('Error creating new product'))
+}
+
+module.exports = {syncAndSeed, Category, Product, createCat, createProduct}
