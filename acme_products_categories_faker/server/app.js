@@ -9,8 +9,9 @@ const morgan = require('morgan')
 
 app.use(morgan('dev'))
 
-//app.get('/app.js', (req, res, next)=>res.sendFile(path.join(__dirname, 'public', 'bundle.js')))
-app.use(express.static(path.join(__dirname,'public')))
+//app.get('/app.js', (req, res, next)=>res.sendFile(path.join(__dirname, 'public')))
+//app.use(express.static(path.join(__dirname,'public')))
+app.use(express.static(path.join(__dirname, '..', 'public')))
 
 app.get('/api/categories', (req, res, next)=>{
     // if(req.params.id){
@@ -29,29 +30,33 @@ app.get('/api/categories', (req, res, next)=>{
     })    
 })
 
-app.post('/category', (req, res, next)=>{
+app.post('/api/categories', async (req, res, next)=>{
     
-    if(createCat())
-        res.sendStatus(201)
+    const newCat = await createCat()
+    if(newCat){
+        console.log(newCat.dataValues)
+        res.send(newCat.dataValues)
+    }
+    else{
+        res.sendStatus(500)
+    }
+})
+
+app.post('/api/products/:catid', async(req, res, next)=>{
+    const newProduct = await createProduct(req.params.catid*1)
+    if(newProduct)
+        res.send(newProduct)
     else 
         res.sendStatus(500)
 })
 
-app.post('/product/:catid', (req, res, next)=>{
-    
-    if(createProduct(req.params.catid*1))
-        res.sendStatus(201)
-    else 
-        res.sendStatus(500)
-})
-
-app.delete('/category/:id', (req, res, next)=>{
+app.delete('/api/categories/:id', (req, res, next)=>{
     Category.destroy({where: {id: req.params.id*1}})
     .then(()=>res.sendStatus(204))
     .catch(next) 
 })
 
-app.delete('/product/:id', (req, res, next)=>{
+app.delete('/api/products/:id', (req, res, next)=>{
     Product.destroy({where: {id: req.params.id*1}})
     .then(()=>res.sendStatus(204))
     .catch(next) 

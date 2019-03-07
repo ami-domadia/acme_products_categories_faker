@@ -54,25 +54,29 @@ const syncAndSeed = function(){
         
         for(let i = 0; i < products.length; i++){
             products[i].setCategory(categories[i])
-            console.log('hello')
+           
         }
+        console.log('seeding')
         return ;
     })
     .catch((err)=>console.log(err))
 }
 
 const createCat = function(){
-    Category.create({name: faker.commerce.department()})
-    .then((category)=>category)
+    return Category.create({name: faker.commerce.department()})
+    .then((category)=>{
+        //console.log(category)
+        return category
+    })
     .catch((err)=>console.log('Error creating new category'))
 }
 
 const createProduct = function(catid){
     let cat = {}
     let prod = {}
-    Product.create({name: faker.commerce.productName()})
+    return Product.create({name: faker.commerce.productName()})
     .then((product)=>{
-        prod=product
+        prod = product
         return Category.findOne({where: {id: catid}})
     })
     .then((category)=>prod.setCategory(category))
