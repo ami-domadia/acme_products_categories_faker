@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "heroku-postbuild": "webpack --config webpack.config.js",
+    "heroku-postbuild": "webpack --config acme_products_categories_faker/webpack.config.js",
     "postinstall": "./node_modules/webpack/bin/webpack.js",
-    "start:dev": "npm run webpack:dev & DATABASE_URL=postgres://localhost:5432/acme_products_categories_faker nodemon server/app.js --ignore client/ --ignore public/",
-    "start": "node server/app.js"
+    "start:dev": "npm run webpack:dev & DATABASE_URL=postgres://localhost:5432/acme_products_categories_faker nodemon acme_products_categories_faker/server/app.js --ignore client/ --ignore public/",
+    "start": "node acme_products_categories_faker/server/app.js"
   },
   "keywords": [],
   "babel": {
@@ -24,10 +24,6 @@
     "babel-preset-stage-2": "^6.17.0",
     "babel-register": "^6.16.3",
     "bluebird": "^2.9.34",
-    "chai": "^3.2.0",
-    "chai-enzyme": "^0.5.2",
-    "enzyme": "^2.5.0",
-    "mocha": "^2.2.5"
   },
   "dependencies": {
     "axios": "^0.18.0",
